@@ -1,6 +1,6 @@
 module.exports={
     env:{
         "BASE_URL":"",
-        "MONGODB_URI":"mongodb://localhost/next_ecommerce"
+        "MONGODB_URL":"mongodb://localhost/next_ecommerce"
     }
 }
