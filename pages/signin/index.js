@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from 'next/link'
+import Link from "next/link";
 export default function Signin() {
   return (
     <div>
@@ -34,7 +34,9 @@ export default function Signin() {
         <p className="my-2">
           You dont't have an account?
           <Link href="/register">
-            <a className="mx-1" style={{color:'blue',}}>Register</a>
+            <a className="mx-1" style={{ color: "blue" }}>
+              Register Now
+            </a>
           </Link>
         </p>
       </form>

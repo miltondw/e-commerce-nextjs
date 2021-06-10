@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
+import Toast from "../../components/Toast/Toast";
+import valid from "../../utils/valid";
 export default function Register() {
   const initialState = { name: "", email: "", password: "", cf_password: "" };
   const [userData, setUserData] = useState(initialState);
@@ -12,7 +14,8 @@ export default function Register() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userData);
+    const errMsg = valid(name, email, password, cf_password);
+    if (errMsg) console.log(errMsg)
   };
   return (
     <div>

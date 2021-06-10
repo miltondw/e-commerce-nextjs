@@ -1,9 +1,11 @@
-import Navbar from '../Navbar/Navbar'
-export default function Layaut({children}) {
-    return (
-        <div className="container">
-            <Navbar/>
-            {children}
-        </div>
-    )
+import Navbar from "../Navbar/Navbar";
+import Notify from "../Notify/Notify";
+export default function Layaut({ children }) {
+  return (
+    <div className="container">
+      <Navbar />
+      <Notify />
+      {children}
+    </div>
+  );
 }
