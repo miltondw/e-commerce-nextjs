@@ -4,8 +4,9 @@ import Loading from "../Loading/Loading";
 import Toast from "../Toast/Toast";
 
 const Notify = () => {
-  const [state, dispatch] = useContext(DataContext);
+  const {state, dispatch} = useContext(DataContext);
   const { notify } = state;
+
 
   return (
     <>

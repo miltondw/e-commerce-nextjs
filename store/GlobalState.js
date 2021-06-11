@@ -4,10 +4,10 @@ export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
   const initialState = { notify: {}, auth: {} };
-  const [state, dispath] = useReducer(reducers, initialState);
+  const [state, dispatch] = useReducer(reducers, initialState);
 
   return (
-    <DataContext.Provider value={[state, dispath]}>
+    <DataContext.Provider value={{ state, dispatch }}>
       {children}
     </DataContext.Provider>
   );
