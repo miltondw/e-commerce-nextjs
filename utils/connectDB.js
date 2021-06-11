@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 
+const URL = process.env.MONGODB_URL || "mongodb://localhost/next_ecommerce";
+
 const connectDB = () => {
   if (mongoose.connections[0].readyState) {
     console.log("Already connected.");
     return;
   }
   mongoose.connect(
-    process.env.MONGODB_URL,
+    URL,
     {
       useCreateIndex: true,
       useNewUrlParser: true,
