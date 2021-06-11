@@ -1,13 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
-import Toast from "../../components/Toast/Toast";
+import { useState, useContext } from "react";
 import valid from "../../utils/valid";
+import { DataContext } from "../../store/GlobalState";
 export default function Register() {
   const initialState = { name: "", email: "", password: "", cf_password: "" };
   const [userData, setUserData] = useState(initialState);
   const { name, email, password, cf_password } = userData;
-
+  const [state, dispatch] = useContext(DataContext);
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
@@ -15,7 +15,8 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errMsg = valid(name, email, password, cf_password);
-    if (errMsg) console.log(errMsg)
+    if (errMsg) return dispatch({ type: "NOTIFY", payload: { error: errMsg } });
+    dispatch({ type: "NOTIFY", payload: { success: "OK!" } });
   };
   return (
     <div>

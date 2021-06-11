@@ -10,8 +10,22 @@ const Notify = () => {
   return (
     <>
       {notify.loading && <Loading />}
-      {notify.error && <Toast />}
-      {notify.success && <Toast />}
+      {notify.error && (
+        <Toast
+          msg={notify.error}
+          handleShow={() => dispatch({ type: "NOTIFY", payload: {} })}
+          bgColor="bg-danger"
+        />
+      )}
+      {notify.success && (
+        <Toast
+          msg={notify.success}
+          handleShow={() => dispatch({ type: "NOTIFY", payload: {} })}
+          bgColor="bg-success"
+        />
+      )}
     </>
   );
 };
+
+export default Notify;
