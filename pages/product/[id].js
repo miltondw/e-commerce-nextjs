@@ -1,12 +1,19 @@
 import Head from "next/head";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import { DataContext } from "../../store/GlobalState";
 import { getData } from "../../utils/fetchData";
+import { addToCart } from "../../store/Actions";
 import Image from "next/image";
 
 export default function DetailProduct(props) {
   const [product] = useState(props.product);
   const [tab, setTab] = useState(0);
+
+  const { state, dispatch } = useContext(DataContext);
+  const { cart } = state;
+
   const imgRef = useRef();
+
   const isActive = (index) => {
     if (tab === index) return "active";
     return "";
@@ -60,7 +67,7 @@ export default function DetailProduct(props) {
         <button
           type="button"
           className="btn btn-dark d-block my-3 px-5"
-        //   onClick={() => dispatch(addToCart(product, cart))}
+          onClick={() => dispatch(addToCart(product, cart))}
         >
           Buy
         </button>
@@ -72,6 +79,6 @@ export default function DetailProduct(props) {
 export async function getServerSideProps({ params: { id } }) {
   const res = await getData(`product/${id}`);
   return {
-    props: { product: res.product }, // will be passed to the page component as props
+    props: { product: res.product },
   };
 }

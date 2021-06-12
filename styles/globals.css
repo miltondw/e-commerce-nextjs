@@ -24,6 +24,10 @@ a {
   align-items: center;
 }
 
+.bt-active {
+  cursor: no-drop !important;
+}
+
 /* Loading */
 @import url("./Loading.mudule.css");
 @import url("./Product.component.css");
