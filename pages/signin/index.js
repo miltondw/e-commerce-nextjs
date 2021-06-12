@@ -1,9 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState, useContext } from "react";
+import { useState, useContext,useEffect } from "react";
 import { DataContext } from "../../store/GlobalState";
 import { postData } from "../../utils/fetchData";
-import Cookies from "js-cookie";
+import Cookie from "js-cookie";
+import {useRouter} from 'next/router'
+
 export default function Signin() {
   const initialState = { email: "", password: "" };
 
@@ -12,6 +14,9 @@ export default function Signin() {
   const { email, password } = userData;
 
   const { state, dispatch } = useContext(DataContext);
+  const {auth} = state
+
+  const router = useRouter()
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
@@ -24,10 +29,9 @@ export default function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (errMsg) return dispatch({ type: "NOTIFY", payload: { error: errMsg } });
     dispatch({ type: "NOTIFY", payload: { loading: true } });
 
-    const res = await postData("auth/register", userData);
+    const res = await postData("auth/login", userData);
 
     if (res.err)
       return dispatch({ type: "NOTIFY", payload: { error: res.err } });
@@ -36,16 +40,22 @@ export default function Signin() {
     dispatch({
       type: "AUTH",
       payload: {
-        toke: res.access_token,
+        token: res.access_token,
         user: res.user,
       },
     });
 
-    Cookies.set("refreshtoken", res.refresh_token, {
+    Cookie.set("refreshtoken", res.refresh_token, {
       path: "api/auth/accesToken",
       expires: 7,
     });
+    localStorage.setItem("firstLogin", true);
   };
+
+  useEffect(()=>{
+    if(Object.keys(auth).length !== 0) router.push("/")
+  },[auth])
+
   return (
     <div>
       <Head>

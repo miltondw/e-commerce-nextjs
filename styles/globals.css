@@ -15,5 +15,14 @@ a {
   box-sizing: border-box;
 }
 
+.avatar {
+  transform: translateY(-3px)
+}
+
+.navbar-light .navbar-nav .nav-link {
+  display: flex;
+  align-items: center;
+}
+
 /* Loading */
 @import url("./Loading.mudule.css");

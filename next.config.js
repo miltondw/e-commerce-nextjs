@@ -7,4 +7,7 @@ module.exports = {
     REFRESH_TOKEN_SECRET:
       "'RaR!;V:BCYme>Z+p<k_2ntu8mM,J^'!!8K!$>TE-QwZ?pPw`QfykhwUeMSQ6@MC+2kZMdT:T",
   },
+  images: {
+    domains: ["res.cloudinary.com"],
+  },
 };
