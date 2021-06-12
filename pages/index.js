@@ -4,7 +4,6 @@ import Head from "next/head";
 import ProductItem from "../components/Product/ProductItem";
 export default function Home(props) {
   const [products, setProducts] = useState(props.products);
-  console.log(products);
   return (
     <div className="products">
       <Head>
