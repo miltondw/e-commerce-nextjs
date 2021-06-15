@@ -4,10 +4,14 @@ import Head from "next/head";
 import CartItem from "../../components/CartItem/CartItem";
 import Link from "next/link";
 import { getData } from "../../utils/fetchData";
+import PaypalBtn from "../paypalBtn";
 export default function Cart() {
   const { state, dispatch } = useContext(DataContext);
   const { cart, auth } = state;
   const [total, setTotal] = useState(0);
+  const [address, setAddress] = useState("");
+  const [mobil, setMobil] = useState("");
+  const [payment, setPayment] = useState(false);
 
   useEffect(() => {
     const getTotal = () => {
@@ -44,6 +48,15 @@ export default function Cart() {
     }
   }, []);
 
+  const handlePayment = () => {
+    if (!address && !mobil)
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "Please add your Adreess and mobil." },
+      });
+    setPayment(true);
+  };
+
   if (cart.length === 0) return <h2>No products</h2>;
   return (
     <div className="row mx-auto">
@@ -74,6 +87,8 @@ export default function Cart() {
             name="address"
             id="address"
             className="form-control mb-2"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
           />
           <label htmlFor="mobil">Mobil</label>
           <input
@@ -81,14 +96,28 @@ export default function Cart() {
             name="mobil"
             id="mobil"
             className="form-control mb-2"
+            value={mobil}
+            onChange={(e) => setMobil(e.target.value)}
           />
         </form>
         <h3>
           Total: <span className="text-danger">${total}</span>
         </h3>
-        <Link href={auth.user ? "#" : "/signin"}>
-          <a className="btn btn-dark my-2">Process with payment</a>
-        </Link>
+        {payment ? (
+          <PaypalBtn
+            total={total}
+            address={address}
+            mobil={mobil}
+            state={state}
+            dispatch={dispatch}
+          />
+        ) : (
+          <Link href={auth.user ? "#!" : "/signin"}>
+            <a className="btn btn-dark my-2" onClick={handlePayment}>
+              Process with payment
+            </a>
+          </Link>
+        )}
       </div>
     </div>
   );

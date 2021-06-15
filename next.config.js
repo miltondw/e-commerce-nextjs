@@ -6,6 +6,8 @@ module.exports = {
     ACCESS_TOKEN_SECRET: "`S:&xbffA5LFD<!e5SptY^#w!,B!ajz`>^?%u',z`D\4zx%t",
     REFRESH_TOKEN_SECRET:
       "'RaR!;V:BCYme>Z+p<k_2ntu8mM,J^'!!8K!$>TE-QwZ?pPw`QfykhwUeMSQ6@MC+2kZMdT:T",
+    PAYPAL_CLIENT_ID:
+      "ATOac4-IOBLXpIpLLunmKe8I4mO5TK9WaouenC1u10xQfbRWn48AL9J7smShxCg-EXxdywaXbL0bkhfK",
   },
   images: {
     domains: ["res.cloudinary.com"],
