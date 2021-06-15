@@ -60,21 +60,14 @@ export default function CartItem({ item, dispatch, cart }) {
           className="far fa-trash-alt text-danger"
           aria-hidden="true"
           style={{ fontSize: "18px" }}
-          data-toggle="modal"
-          data-target="#exampleModal"
-          onClick={() =>
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          onClick={() => {
             dispatch({
               type: "ADD_MODAL",
-              payload: [
-                {
-                  data: cart,
-                  id: item._id,
-                  title: item.title,
-                  type: "ADD_CART",
-                },
-              ],
-            })
-          }
+              payload: { data: cart, id: item._id, title: item.title },
+            });
+          }}
         ></i>
       </td>
     </tr>

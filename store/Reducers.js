@@ -1,4 +1,4 @@
-import {ACTIONS} from "./Actions";
+import { ACTIONS } from "./Actions";
 
 const reducers = (state, action) => {
   switch (action.type) {
@@ -12,10 +12,15 @@ const reducers = (state, action) => {
         ...state,
         auth: action.payload,
       };
-      case ACTIONS.ADD_CART:
+    case ACTIONS.ADD_CART:
       return {
         ...state,
         cart: action.payload,
+      };
+    case ACTIONS.ADD_MODAL:
+      return {
+        ...state,
+        modal: action.payload,
       };
     default:
       return state;
@@ -23,4 +28,3 @@ const reducers = (state, action) => {
 };
 
 export default reducers;
-    
