@@ -45,7 +45,7 @@ export default function Navbar() {
         </a>
         <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <li>
-            <Link href="#">
+            <Link href="/profile">
               <a className="dropdown-item">Profile</a>
             </Link>
           </li>
