@@ -8,8 +8,11 @@ module.exports = {
       "'RaR!;V:BCYme>Z+p<k_2ntu8mM,J^'!!8K!$>TE-QwZ?pPw`QfykhwUeMSQ6@MC+2kZMdT:T",
     PAYPAL_CLIENT_ID:
       "ATOac4-IOBLXpIpLLunmKe8I4mO5TK9WaouenC1u10xQfbRWn48AL9J7smShxCg-EXxdywaXbL0bkhfK",
+    CLOUD_UPDATE_PRESET: "nextjs_store",
+    CLOUD_NAME: "daekebmip",
+    CLOUD_API: "https://api.cloudinary.com/v1_1/daekebmip/image/upload",
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com", "localhost", "blob:http://localhost"],
   },
 };

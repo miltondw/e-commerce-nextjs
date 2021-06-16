@@ -16,7 +16,8 @@ a {
 }
 
 .avatar {
-  transform: translateY(-3px)
+  transform: translateY(-3px);
+  border-radius: 50%;
 }
 
 .navbar-light .navbar-nav .nav-link {

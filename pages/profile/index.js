@@ -1,9 +1,10 @@
 import Head from "next/head";
-import Image from "next/image";
+// import Image from "next/image";
 import { useContext, useState, useEffect } from "react";
 import { DataContext } from "../../store/GlobalState";
 import valid from "../../utils/valid";
 import { patchData } from "../../utils/fetchData";
+import ImageUpload from "../../utils/ImageUpload";
 export default function Profile() {
   const initialState = {
     avatar: "",
@@ -21,6 +22,14 @@ export default function Profile() {
     if (auth.user) setData({ ...data, name: auth.user.name });
   }, [auth.user]);
 
+  useEffect(() => {
+    // img.onload = function () {
+    //   URL.revokeObjectURL(this.src); // clean-up memory
+    //   document.body.appendChild(this); // add image to DOM
+    // };
+    // img.src = url;
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -34,6 +43,7 @@ export default function Profile() {
         return dispatch({ type: "NOTIFY", payload: { error: errMsg } });
       updatePassword();
     }
+    if (name !== auth.user.name || avatar) updateInfo();
   };
   const updatePassword = () => {
     dispatch({ type: "NOTIFY", payload: { loading: true } });
@@ -43,6 +53,56 @@ export default function Profile() {
       return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
     });
     setData({ ...data, password: "", cf_password: "" });
+  };
+  const changeAvatar = (e) => {
+    const file = e.target.files[0];
+    if (!file)
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "File does not exist." },
+      });
+
+    if (file.size > 1024 * 1024)
+      //1mb
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "The largest image size is 1mb." },
+      });
+
+    if (file.type !== "image/jpeg" && file.type !== "image/png")
+      //1mb
+      return dispatch({
+        type: "NOTIFY",
+        payload: { error: "Image format is incorrect." },
+      });
+
+    // let blob = new Blob([file], { type: "image/jpg" }),
+    //   url = URL.createObjectURL(blob);
+    setData({ ...data, avatar: file });
+  };
+  const updateInfo = async () => {
+    let media;
+    // dispatch({ type: "NOTIFY", payload: { loading: true } });
+    if (avatar) media = await ImageUpload([avatar]);
+    patchData(
+      "user",
+      {
+        name,
+        avatar: avatar ? media[0].url : auth.user.avatar,
+      },
+      auth.token
+    ).then((res) => {
+      if (res.err)
+        return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+      dispatch({
+        type: "AUTH",
+        payload: { token: auth.token, user: res.user },
+      });
+      return dispatch({
+        type: "NOTIFY",
+        payload: { success:res.msg},
+      });
+    });
   };
   if (!auth.user) return null;
   return (
@@ -56,17 +116,28 @@ export default function Profile() {
             {auth.user.role === "user" ? "User Profile" : "Admin Profile"}
           </h3>
           <div className="avatar">
-            <Image
-              src={auth.user.avatar}
+            {/* <Image
+              src={'blob:http://localhost:3000/e6d82acf-ef76-45a5-9022-97950480ae26'}
+              alt={auth.user.name}
+              width={150}
+              height={150}
+            /> */}
+            <img
+              src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar}
               alt={auth.user.name}
               width={150}
               height={150}
             />
-
             <span>
               <i className="fas fa-camera"></i>
               <p>Change</p>
-              <input type="file" name="file" id="file_up" />
+              <input
+                type="file"
+                name="file"
+                id="file_up"
+                onChange={changeAvatar}
+                accept="image/*"
+              />
             </span>
           </div>
 
