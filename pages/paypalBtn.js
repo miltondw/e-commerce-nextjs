@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { postData } from "../utils/fetchData";
 export default function paypalBtn({ total, address, mobile, state, dispatch }) {
   const refPaypalBtn = useRef();
-  const { cart, auth } = state;
+  const { cart, auth, orders } = state;
   useEffect(() => {
     paypal
       .Buttons({
@@ -36,7 +36,18 @@ export default function paypalBtn({ total, address, mobile, state, dispatch }) {
                   type: "NOTIFY",
                   payload: { error: res.err },
                 });
+
               dispatch({ type: "ADD_CART", payload: [] });
+              const newOrder = {
+                ...res.newOrder,
+                user: auth.user,
+              };
+
+              dispatch({
+                type: "ADD_ORDERS",
+                payload: [...orders, newOrder],
+              });
+
               return dispatch({
                 type: "NOTIFY",
                 payload: { success: res.msg },

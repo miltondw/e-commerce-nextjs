@@ -29,6 +29,21 @@ a {
   cursor: no-drop !important;
 }
 
+/* Image from details */
+.row.border-bottom.mx-0.p-2.justify-content-betwenn.align-items-center>div {
+  width: auto !important;
+}
+
+.order_detail-image:hover {
+  transform: scale(1.2);
+
+}
+
+.order_detail-image:hover img {
+  border: 2px solid #094e4dcc !important;
+
+}
+
 /* Loading */
 @import url("./Loading.mudule.css");
 @import url("./Product.component.css");

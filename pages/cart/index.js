@@ -10,7 +10,7 @@ export default function Cart() {
   const { cart, auth } = state;
   const [total, setTotal] = useState(0);
   const [address, setAddress] = useState("");
-  const [mobil, setMobil] = useState("");
+  const [mobile, setMobil] = useState("");
   const [payment, setPayment] = useState(false);
 
   useEffect(() => {
@@ -50,10 +50,10 @@ export default function Cart() {
   }, []);
 
   const handlePayment = () => {
-    if (!address && !mobil)
+    if (!address && !mobile)
       return dispatch({
         type: "NOTIFY",
-        payload: { error: "Please add your Adreess and mobil." },
+        payload: { error: "Please add your Adreess and mobile." },
       });
     setPayment(true);
   };
@@ -91,13 +91,13 @@ export default function Cart() {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          <label htmlFor="mobil">Mobil</label>
+          <label htmlFor="mobile">Mobile</label>
           <input
             type="text"
-            name="mobil"
-            id="mobil"
+            name="mobile"
+            id="mobile"
             className="form-control mb-2"
-            value={mobil}
+            value={mobile}
             onChange={(e) => setMobil(e.target.value)}
           />
         </form>
@@ -108,7 +108,7 @@ export default function Cart() {
           <PaypalBtn
             total={total}
             address={address}
-            mobil={mobil}
+            mobile={mobile}
             state={state}
             dispatch={dispatch}
           />
