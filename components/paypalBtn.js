@@ -1,8 +1,13 @@
-import { useEffect, useRef } from "react";
-import { postData } from "../utils/fetchData";
-export default function paypalBtn({ total, address, mobile, state, dispatch }) {
+import { useEffect, useRef, useContext } from "react";
+import { DataContext } from "../store/GlobalState";
+import { patchData } from "../utils/fetchData";
+import { updateItem } from "../store/Actions";
+
+export default function paypalBtn({ order }) {
   const refPaypalBtn = useRef();
-  const { cart, auth, orders } = state;
+  const { state, dispatch } = useContext(DataContext);
+  const { auth, orders } = state;
+
   useEffect(() => {
     paypal
       .Buttons({
@@ -12,7 +17,7 @@ export default function paypalBtn({ total, address, mobile, state, dispatch }) {
             purchase_units: [
               {
                 amount: {
-                  value: total,
+                  value: order.total,
                 },
               },
             ],
@@ -26,9 +31,11 @@ export default function paypalBtn({ total, address, mobile, state, dispatch }) {
               payload: { loading: true },
             });
             // This function shows a transaction success message to your buyer.
-            postData(
-              "order",
-              { address, mobile, cart, total },
+            patchData(
+              `order/payment/${order._id}`,
+              {
+                paymentId: details.payer.payer_id,
+              },
               auth.token
             ).then((res) => {
               if (res.err)
@@ -37,17 +44,20 @@ export default function paypalBtn({ total, address, mobile, state, dispatch }) {
                   payload: { error: res.err },
                 });
 
-              dispatch({ type: "ADD_CART", payload: [] });
-              const newOrder = {
-                ...res.newOrder,
-                user: auth.user,
-              };
-
-              dispatch({
-                type: "ADD_ORDERS",
-                payload: [...orders, newOrder],
-              });
-
+              dispatch(
+                updateItem(
+                  orders,
+                  order._id,
+                  {
+                    ...order,
+                    paid: true,
+                    dateOfPayment: details.create_time,
+                    paymentId: details.payer.payer_id,
+                    method: "paypal",
+                  },
+                  "ADD_ORDERS"
+                )
+              );
               return dispatch({
                 type: "NOTIFY",
                 payload: { success: res.msg },
@@ -59,5 +69,6 @@ export default function paypalBtn({ total, address, mobile, state, dispatch }) {
       })
       .render(refPaypalBtn.current);
   }, []);
+
   return <div ref={refPaypalBtn}></div>;
 }

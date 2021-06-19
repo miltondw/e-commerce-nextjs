@@ -8,12 +8,12 @@ export default function DetailOrder() {
   const { orders, auth } = state;
   const router = useRouter();
   const [orderDetail, setOrderDetail] = useState([]);
-
   useEffect(() => {
     const newArr = orders.filter((order) => order._id === router.query.id);
     setOrderDetail(newArr);
   }, [orders]);
 
+  if (!auth.user) return null;
   return (
     <div className="my-3">
       <Head>
@@ -25,7 +25,11 @@ export default function DetailOrder() {
           Back
         </button>
       </div>
-      <OrderDetail orderDetail={orderDetail} />
+      <OrderDetail
+        orderDetail={orderDetail}
+        state={state}
+        dispatch={dispatch}
+      />
     </div>
   );
 }

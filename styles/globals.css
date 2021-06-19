@@ -43,6 +43,9 @@ a {
   border: 2px solid #094e4dcc !important;
 
 }
+h5.flex-fill.text-secondary.px-3.m-0{
+  width: 20% !important;
+}
 
 /* Loading */
 @import url("./Loading.mudule.css");
