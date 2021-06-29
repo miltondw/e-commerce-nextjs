@@ -7,9 +7,18 @@ export default function Modal() {
   const { modal, auth } = state;
   const handleSubmit = () => {
     if (modal.type === "ADD_USERS") {
-      deleteData(`user/${modal.id}`, auth.token).then((res) =>
-        console.log(res)
-      );
+      deleteData(`user/${modal.id}`, auth.token).then((res) => {
+        if (res.err)
+          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+        return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+      });
+    }
+    if (modal.type === "ADD_CATEGORIES") {
+      deleteData(`categories/${modal.id}`, auth.token).then((res) => {
+        if (res.err)
+          return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+        return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+      });
     }
     dispatch(deleteItem(modal.data, modal.id, modal.type));
     dispatch({ type: "ADD_MODAL", payload: {} });
@@ -26,9 +35,7 @@ export default function Modal() {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              {Array.isArray(modal)
-                ? modal.length !== 0 && modal[0].title
-                : modal.title}
+              {modal.title}
             </h5>
             <button
               type="button"

@@ -1,40 +1,47 @@
 import connectDB from "../../../utils/connectDB";
+import Categories from "../../../models/categoriesModel";
 import auth from "../../../middlewares/auth";
-import Users from "../../../models/userModel";
 
 connectDB();
 
 export default async (req, res) => {
   switch (req.method) {
-    case "PATCH":
-      await updateRole(req, res);
+    case "PUT":
+      await updateCategory(req, res);
       break;
     case "DELETE":
-      await deleteUser(req, res);
+      await deleteCategory(req, res);
       break;
   }
 };
-const updateRole = async (req, res) => {
+
+const updateCategory = async (req, res) => {
   try {
     const result = await auth(req, res);
-    if (result.role !== "admin" || !result.root)
+    if (result.role !== "admin")
       return res.status(400).json({ err: "Authentication is not valid" });
+    const { name } = req.body;
     const { id } = req.query;
-    const { role } = req.body;
-    await Users.findOneAndUpdate({ _id: id }, { role });
-    res.json({ msg: "Updated success" });
+    const newCategory = await Categories.findOneAndUpdate(
+      { _id: id },
+      { name }
+    );
+    res.json({
+      msg: "Succes! updete a new category",
+      category: { ...newCategory._doc, name },
+    });
   } catch (err) {
     return res.status(500).json({ err: err.message });
   }
 };
-const deleteUser = async (req, res) => {
+const deleteCategory = async (req, res) => {
   try {
     const result = await auth(req, res);
-    if (result.role !== "admin" || !result.root)
+    if (result.role !== "admin")
       return res.status(400).json({ err: "Authentication is not valid" });
     const { id } = req.query;
-    await Users.findByIdAndDelete(id);
-    res.json({ msg: "User Deleted successfully" });
+    await Categories.findByIdAndDelete(id);
+    res.json({ msg: "Succes! deleted category" });
   } catch (err) {
     return res.status(500).json({ err: err.message });
   }
