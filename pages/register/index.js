@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState, useContext,useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import valid from "../../utils/valid";
 import { DataContext } from "../../store/GlobalState";
 import { postData } from "../../utils/fetchData";
@@ -38,7 +38,8 @@ export default function Register() {
 
     if (res.err)
       return dispatch({ type: "NOTIFY", payload: { error: res.err } });
-    return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+    dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+    return router.push("/signin");
   };
 
   useEffect(() => {

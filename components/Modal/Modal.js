@@ -1,11 +1,17 @@
 import { useContext } from "react";
 import { DataContext } from "../../store/GlobalState";
 import { deleteItem } from "../../store/Actions";
+import { deleteData } from "../../utils/fetchData";
 export default function Modal() {
   const { state, dispatch } = useContext(DataContext);
-  const { modal } = state;
+  const { modal, auth } = state;
   const handleSubmit = () => {
-    dispatch(deleteItem(modal.data, modal.id, "ADD_CART"));
+    if (modal.type === "ADD_USERS") {
+      deleteData(`user/${modal.id}`, auth.token).then((res) =>
+        console.log(res)
+      );
+    }
+    dispatch(deleteItem(modal.data, modal.id, modal.type));
     dispatch({ type: "ADD_MODAL", payload: {} });
   };
   return (
@@ -20,7 +26,9 @@ export default function Modal() {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              {modal.title}
+              {Array.isArray(modal)
+                ? modal.length !== 0 && modal[0].title
+                : modal.title}
             </h5>
             <button
               type="button"
