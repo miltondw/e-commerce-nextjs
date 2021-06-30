@@ -10,7 +10,8 @@ export default async function ImageUpload(images) {
       body: formData,
     });
     const data = await res.json();
-    imgArr.push({ public_id: data.public_id, url: data.secure_url });
+    imgArr.push({ public_id: data.public_id, url: data.secure_url }); 
   }
+
   return imgArr;
 }

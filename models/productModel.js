@@ -26,7 +26,7 @@ const productSchema = new Schema(
     },
     category: {
       type: String,
-      required: true,
+      default:'all'
     },
     checked: {
       type: Boolean,

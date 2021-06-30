@@ -43,7 +43,8 @@ a {
   border: 2px solid #094e4dcc !important;
 
 }
-h5.flex-fill.text-secondary.px-3.m-0{
+
+h5.flex-fill.text-secondary.px-3.m-0 {
   width: 20% !important;
 }
 
@@ -51,3 +52,4 @@ h5.flex-fill.text-secondary.px-3.m-0{
 @import url("./Loading.mudule.css");
 @import url("./Product.component.css");
 @import url("./Profile.page.css");
+@import url("./ProductManager.page.css");

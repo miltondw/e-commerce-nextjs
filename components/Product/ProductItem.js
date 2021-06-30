@@ -6,7 +6,7 @@ import { addToCart } from "../../store/Actions";
 
 export default function ProductItem({ product }) {
   const { state, dispatch } = useContext(DataContext);
-  const { cart } = state;
+  const { cart, auth } = state;
   const btnActive = (active) => {
     if (active) return "bt-active";
     return "";
@@ -29,6 +29,17 @@ export default function ProductItem({ product }) {
       </>
     );
   };
+  const adminLink = () => {
+    return (
+      <>
+        <Link href={`create/${product._id}`}>
+          <a className="btn btn-info">Edit</a>
+        </Link>
+        <button className={`btn btn-danger `}>Delete</button>
+      </>
+    );
+  };
+  if (!auth.user) return null;
   return (
     <div className="card my-3" style={{ width: " 18rem" }}>
       <Image
@@ -64,8 +75,7 @@ export default function ProductItem({ product }) {
         </p>
 
         <div className="row justify-content-between mx-0">
-          {/* {!auth.user || auth.user.role !== "admin" ? userLink() : adminLink()} */}
-          {userLink()}
+          {!auth.user || auth.user.role !== "admin" ? userLink() : adminLink()}
         </div>
       </div>
     </div>
