@@ -37,6 +37,9 @@ export default function Modal() {
   const handleSubmit = () => {
     if (modal.length !== 0) {
       for (const item of modal) {
+        if (item.type == "ADD_CART") {
+          dispatch(deleteItem(item.data, item.id, item.type));
+        }
         if (item.type === "ADD_USERS") deleteUser(item);
         if (item.type === "ADD_CATEGORIES") deleteCategories(item);
         if (item.type === "DELETE_PRODUCT") deleteProduct(item);
