@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { DataContext } from "../../store/GlobalState";
 import { addToCart } from "../../store/Actions";
 
-export default function ProductItem({ product }) {
+export default function ProductItem({ product, handleCheck }) {
   const { state, dispatch } = useContext(DataContext);
   const { cart, auth } = state;
   const btnActive = (active) => {
@@ -35,13 +35,47 @@ export default function ProductItem({ product }) {
         <Link href={`create/${product._id}`}>
           <a className="btn btn-info">Edit</a>
         </Link>
-        <button className={`btn btn-danger `}>Delete</button>
+        <button
+          className={`btn btn-danger `}
+          aria-hidden="true"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          onClick={() => {
+            dispatch({
+              type: "ADD_MODAL",
+              payload: [
+                {
+                  data: "",
+                  id: product._id,
+                  title: product.title,
+                  type: "DELETE_PRODUCT",
+                },
+              ],
+            });
+          }}
+        >
+          Delete
+        </button>
       </>
     );
   };
   if (!auth.user) return null;
   return (
     <div className="card my-3" style={{ width: " 18rem" }}>
+      {auth.user && auth.user.role === "admin" && (
+        <input
+          type="checkbox"
+          checked={product.checked}
+          className="position-absolute"
+          style={{
+            height: "20px",
+            width: "20px",
+            zIndex: "10",
+            cursor: "pointer",
+          }}
+          onChange={() => handleCheck(product._id)}
+        />
+      )}
       <Image
         src={product.images[0].url}
         alt={product.title}

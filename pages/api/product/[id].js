@@ -11,6 +11,9 @@ export default async (req, res) => {
     case "PUT":
       await updateProduct(req, res);
       break;
+    case "DELETE":
+      await deleteProduct(req, res);
+      break;
   }
 };
 
@@ -61,6 +64,18 @@ const updateProduct = async (req, res) => {
       }
     );
     res.json({ msg: "Success! Updated a product" });
+  } catch (err) {
+    return res.status(500).json({ err: err.message });
+  }
+};
+const deleteProduct = async (req, res) => {
+  try {
+    const result = await auth(req, res);
+    if (result.role !== "admin")
+      return res.status(400).json({ err: "Authentication is not valid" });
+    const { id } = req.query;
+    await Products.findByIdAndDelete(id);
+    res.json({ msg: "Succes! deleted Product" });
   } catch (err) {
     return res.status(500).json({ err: err.message });
   }
