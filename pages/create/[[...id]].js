@@ -1,13 +1,12 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../store/GlobalState";
 import ImageUpload from "../../utils/ImageUpload";
-import { postData } from "../../utils/fetchData";
+import { postData, getData, putData } from "../../utils/fetchData";
 
 export default function ProductsManager() {
   const initialState = {
-    product_id: "",
     title: "",
     price: 0,
     inStock: 0,
@@ -16,13 +15,26 @@ export default function ProductsManager() {
     category: "",
   };
   const [product, setProduct] = useState(initialState);
-  const { product_id, title, price, inStock, description, content, category } =
-    product;
+  const { title, price, inStock, description, content, category } = product;
   const [images, setImages] = useState([]);
   const { state, dispatch } = useContext(DataContext);
   const { categories, auth } = state;
   const router = useRouter();
   const { id } = router.query;
+  const [onEdit, setOnEdit] = useState(false);
+  useEffect(() => {
+    if (id) {
+      setOnEdit(true);
+      getData(`product/${id}`).then((res) => {
+        setProduct(res.product);
+        setImages(res.product.images);
+      });
+    } else {
+      setOnEdit(false);
+      setProduct(initialState);
+      setImages([]);
+    }
+  }, [id]);
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
@@ -95,14 +107,23 @@ export default function ProductsManager() {
     if (imgNewURL.length > 0) media = await ImageUpload(imgNewURL);
 
     let res;
-
-    res = await postData(
-      "product",
-      { ...product, images: [...imgOldURL, ...media] },
-      auth.token
-    );
-    if (res.err)
-      return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+    if (onEdit) {
+      res = await putData(
+        `product/${id}`,
+        { ...product, images: [...imgOldURL, ...media] },
+        auth.token
+      );
+      if (res.err)
+        return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+    } else {
+      res = await postData(
+        "product",
+        { ...product, images: [...imgOldURL, ...media] },
+        auth.token
+      );
+      if (res.err)
+        return dispatch({ type: "NOTIFY", payload: { error: res.err } });
+    }
 
     return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
   };
@@ -113,14 +134,6 @@ export default function ProductsManager() {
       </Head>
       <form className="row" onSubmit={handleSubmit}>
         <div className="col-md-6">
-          <input
-            type="text"
-            className="d-block my-4 w-100 p-2"
-            name="product_id"
-            value={product_id}
-            placeholder="Product ID"
-            onChange={handleChangeInput}
-          />
           <input
             type="text"
             className="d-block my-4 w-100 p-2"
@@ -210,20 +223,13 @@ export default function ProductsManager() {
                   alt={img.name}
                   className="img-thumbnail rounded"
                 />
-                {/* <Image
-                  src={img.url ? img.url : URL.createObjectURL(img)}
-                  alt={img.title}
-                  width={80}
-                  height={80}
-                  className="img-thumbnail w-100"
-                /> */}
                 <span onClick={() => deleteImage(index)}>x</span>
               </div>
             ))}
           </div>
         </div>
         <button type="submit" className="btn btn-info mb-3 w-50 px-4 ">
-          Create
+          {onEdit?'Update':'Create'}
         </button>
       </form>
     </div>
