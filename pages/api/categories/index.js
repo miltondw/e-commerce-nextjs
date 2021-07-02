@@ -22,7 +22,7 @@ const createCategory = async (req, res) => {
     const { name } = req.body;
     if (!name)
       return res.status(400).json({ err: "Name cannot be left blank." });
-    const newCategory = new Categories({ name });
+    const newCategory = new Categories({ name: name.toLowerCase() });
     await newCategory.save();
     res.json({
       msg: "Success! Created a new category.",

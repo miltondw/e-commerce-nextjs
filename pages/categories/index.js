@@ -55,7 +55,7 @@ export default function Categories() {
           className="form-control"
           placeholder="Add a new Category"
           value={name}
-          onChange={(e) => setName(e.target.value.toLowerCase())}
+          onChange={(e) => setName(e.target.value)}
         />
         <button className="btn btn-secondary" onClick={createCategory}>
           {id ? "Update" : "Create"}

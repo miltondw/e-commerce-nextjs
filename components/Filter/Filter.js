@@ -28,7 +28,7 @@ export default function Filter({ state }) {
           value={category}
           onChange={handleCategory}
         >
-          <option defaultValue="all">All Products</option>
+          <option value="all">All Products</option>
 
           {categories.map((item) => (
             <option key={item._id} value={item.name}>
