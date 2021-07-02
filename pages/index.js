@@ -2,6 +2,7 @@ import { getData } from "../utils/fetchData";
 import filterSearch from "../utils/filterSearch";
 import { DataContext } from "../store/GlobalState";
 import ProductItem from "../components/Product/ProductItem";
+import Filter from "../components/Filter/Filter";
 import { useState, useContext, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -53,6 +54,7 @@ export default function Home(props) {
       <Head>
         <title>Home Page</title>
       </Head>
+      <Filter state={state} />
       {auth.user &&
         auth.user.role === "admin" &&
         (products.length !== 0 ? (

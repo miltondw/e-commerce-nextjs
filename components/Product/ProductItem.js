@@ -59,7 +59,7 @@ export default function ProductItem({ product, handleCheck }) {
       </>
     );
   };
-  if (!auth.user) return null;
+  // if (!auth.user) return null;
   return (
     <div className="card my-3" style={{ width: " 18rem" }}>
       {auth.user && auth.user.role === "admin" && (
