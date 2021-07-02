@@ -14,7 +14,7 @@ export default function ProductItem({ product, handleCheck }) {
   const userLink = () => {
     return (
       <>
-        <Link href={`product/${product._id}`}>
+        <Link href={`/product/${product._id}`}>
           <a className="btn btn-info">View</a>
         </Link>
         <button

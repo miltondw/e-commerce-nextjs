@@ -9,10 +9,16 @@ export default function Filter({ state }) {
 
   const { categories } = state;
   const handleCategory = (e) => {
-    console.log(e)
-    setCategory(e.target.value)
-    filterSearch({router, category: e.target.value})
+    setCategory(e.target.value);
+    filterSearch({ router, category: e.target.value });
   };
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    filterSearch({ router, sort: e.target.value });
+  };
+  useEffect(() => {
+    filterSearch({ router, search: search ? search : "all" });
+  }, [search]);
   const router = useRouter();
   return (
     <div className="input-group">
@@ -22,7 +28,7 @@ export default function Filter({ state }) {
           value={category}
           onChange={handleCategory}
         >
-          <option value="all">All Products</option>
+          <option defaultValue="all">All Products</option>
 
           {categories.map((item) => (
             <option key={item._id} value={item.name}>
@@ -38,7 +44,7 @@ export default function Filter({ state }) {
           className="form-control"
           list="title_product"
           value={search.toLowerCase()}
-          //   onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </form>
 
@@ -46,7 +52,7 @@ export default function Filter({ state }) {
         <select
           className="form-select text-capitalize"
           value={sort}
-          //   onChange={handleSort}
+          onChange={handleSort}
         >
           <option value="-createdAt">Newest</option>
           <option value="oldest">Oldest</option>
