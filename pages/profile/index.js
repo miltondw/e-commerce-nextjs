@@ -1,5 +1,5 @@
 import Head from "next/head";
-// import Image from "next/image";
+import Image from "next/image";
 import { useContext, useState, useEffect } from "react";
 import { DataContext } from "../../store/GlobalState";
 import valid from "../../utils/valid";

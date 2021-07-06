@@ -73,21 +73,23 @@ export default function Users() {
 
                 {auth.user.root && auth.user.email !== user.email ? (
                   <i
-                    className="fas fa-trash-alt text-danger ml-2 p-2"
+                    className="far fa-trash-alt text-danger ml-2 p-2"
                     aria-hidden="true"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    onClick={() =>
-                      dispatch([{
+                    onClick={() => {
+                      dispatch({
                         type: "ADD_MODAL",
-                        payload: {
-                          data: users,
-                          id: user._id,
-                          title: user.name,
-                          type: "ADD_USERS",
-                        },
-                      }])
-                    }
+                        payload: [
+                          {
+                            data: users,
+                            id: user._id,
+                            title: user.name,
+                            type: "ADD_USERS",
+                          },
+                        ],
+                      });
+                    }}
                   ></i>
                 ) : (
                   <i
