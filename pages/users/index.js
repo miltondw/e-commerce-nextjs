@@ -78,7 +78,7 @@ export default function Users() {
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                     onClick={() =>
-                      dispatch({
+                      dispatch([{
                         type: "ADD_MODAL",
                         payload: {
                           data: users,
@@ -86,7 +86,7 @@ export default function Users() {
                           title: user.name,
                           type: "ADD_USERS",
                         },
-                      })
+                      }])
                     }
                   ></i>
                 ) : (
